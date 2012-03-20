@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
-namespace Extrude.Framework.Windows.Physics {
+namespace RaspberryEngine.Physics {
 	 /// <summary>
     /// Convert units between display and simulation units.
     /// </summary>

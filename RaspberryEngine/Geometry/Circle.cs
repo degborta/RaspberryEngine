@@ -1,7 +1,6 @@
-using System;
 using Microsoft.Xna.Framework;
 
-namespace Extrude.Framework.Geometry
+namespace RaspberryEngine.Geometry
 {
     /// <summary>
     /// Represents a 2D circle.

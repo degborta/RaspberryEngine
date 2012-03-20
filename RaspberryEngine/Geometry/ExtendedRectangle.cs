@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 
-namespace Extrude.Framework.Geometry
+namespace RaspberryEngine.Geometry
 {
 	public class ExtendedRectangle
 	{

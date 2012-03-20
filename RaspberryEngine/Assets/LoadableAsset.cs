@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Extrude.Framework.Assets {
+namespace RaspberryEngine.Assets {
 	public class LoadableAsset {
 		public string FileName { get; set; }
 		public string Key { get; set; }

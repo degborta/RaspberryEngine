@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Extrude.Framework.Screens{
+namespace RaspberryEngine.Screens{
 	public interface IScreen {
 		void Initialize();
 

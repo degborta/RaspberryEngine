@@ -8,7 +8,7 @@
     <ProjectGuid>{C266DBE5-ABCB-4576-931D-4673C951EA46}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RaspberryEngine.Windows</RootNamespace>
+    <RootNamespace>RaspberryEngine</RootNamespace>
     <AssemblyName>RaspberryEngine.Windows</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

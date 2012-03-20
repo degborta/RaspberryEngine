@@ -1,16 +1,14 @@
-using System;
 using System.Collections.Generic;
-using Extrude.Framework.Assets;
-using Extrude.Framework.Components;
-using Extrude.Framework.Graphics;
-using Extrude.Framework.Helpers;
-using Extrude.Framework.Particles;
-using Extrude.Framework.Windows.Components;
+using Extrude.Framework;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using RaspberryEngine.Assets;
+using RaspberryEngine.Components;
+using RaspberryEngine.Graphics;
+using RaspberryEngine.Helpers;
+using RaspberryEngine.Particles;
 
-namespace Extrude.Framework.Screens
+namespace RaspberryEngine.Screens
 {
     /// <summary>
     /// A screen is a single layer that has update and draw logic, and which
