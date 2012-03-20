@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C266DBE5-ABCB-4576-931D-4673C951EA46}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RaspberryEngine.Windows</RootNamespace>
+    <AssemblyName>RaspberryEngine.Windows</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FarseerPhysicsXNA">
+      <HintPath>..\ThirdParty\Farseer\Windows\FarseerPhysicsXNA.dll</HintPath>
+    </Reference>
+    <Reference Include="GamepadBridge">
+      <HintPath>..\ThirdParty\MonoGame\Windows\GamepadBridge.dll</HintPath>
+    </Reference>
+    <Reference Include="GamepadConfigControls">
+      <HintPath>..\ThirdParty\MonoGame\Windows\GamepadConfigControls.dll</HintPath>
+    </Reference>
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\ThirdParty\MonoGame\Windows\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework.Windows">
+      <HintPath>..\ThirdParty\MonoGame\Windows\MonoGame.Framework.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenTK">
+      <HintPath>..\ThirdParty\MonoGame\Windows\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tao.Sdl">
+      <HintPath>..\ThirdParty\MonoGame\Windows\Tao.Sdl.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\AssetsManager.cs" />
+    <Compile Include="Assets\AssetType.cs" />
+    <Compile Include="Assets\LoadableAsset.cs" />
+    <Compile Include="Components\Button.cs" />
+    <Compile Include="Components\Camera.cs" />
+    <Compile Include="Components\FPSCounter.cs" />
+    <Compile Include="Components\Menu.cs" />
+    <Compile Include="Geometry\Circle.cs" />
+    <Compile Include="Geometry\ExtendedRectangle.cs" />
+    <Compile Include="Graphics\AnimatedSprite.cs" />
+    <Compile Include="Graphics\Sprite.cs" />
+    <Compile Include="Graphics\SpriteSheet.cs" />
+    <Compile Include="Graphics\Text.cs" />
+    <Compile Include="Helpers\GameHelper.cs" />
+    <Compile Include="Input\InputState.cs" />
+    <Compile Include="Particles\Emitter.cs" />
+    <Compile Include="Particles\Particle.cs" />
+    <Compile Include="Physics\ConvertUnits.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenManager.cs" />
+    <Compile Include="Screens\IScreen.cs" />
+    <Compile Include="Screens\PhysicsScreen.cs" />
+    <Compile Include="Screens\Screen.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Audio\" />
+    <Folder Include="Debug\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
