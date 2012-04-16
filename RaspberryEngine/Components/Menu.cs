@@ -98,6 +98,9 @@ namespace RaspberryEngine.Components
                 screen.AddText(fontKey, optionsMenu[s], position, new Vector2(orginX, 0), Vector2.One, 0, Color.White, 0);
 
                 //check if any button was pressed
+                if (Touch == null)
+                    return;
+
                 foreach (TouchLocation t in Touch)
                 {
                     if (bound.Contains(t.Position))

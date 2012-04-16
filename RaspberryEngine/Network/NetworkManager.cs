@@ -84,9 +84,5 @@ namespace RaspberryEngine.Network
         { return Client.CreateMessage(); }
         public void SendMessage(NetOutgoingMessage Out, NetDeliveryMethod Method)
         { Client.SendMessage(Out, Method); }
-    
-        
-
-
     }
 }
