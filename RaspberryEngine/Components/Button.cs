@@ -6,8 +6,9 @@ namespace RaspberryEngine.Components
     public class Button
     {
         public string Name;
+        public bool PrewTouch;
 
-        public Button(string name) { Name = name; }
+        public Button(string name) { Name = name; PrewTouch = false; }
 
         public virtual Rectangle getBound()
         {
@@ -33,7 +34,11 @@ namespace RaspberryEngine.Components
             foreach (TouchLocation t in Touch)
             {
                 if (Bound.Contains(t.Position))
-                { return true; }
+                {
+                    if (PrewTouch == false)
+                    { PrewTouch = true; return true; }
+                }
+                else PrewTouch = false;
             }
             return false;
         }
@@ -61,7 +66,11 @@ namespace RaspberryEngine.Components
             foreach (TouchLocation t in Touch)
             {
                 if ((Position - t.Position).Length() < Radius)
-                { return true; }
+                {
+                    if (PrewTouch == false)
+                    { PrewTouch = true; return true; }
+                }
+                else PrewTouch = false;
             }
             return false;
         }
