@@ -5,9 +5,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using RaspberryEngine.Assets;
 using RaspberryEngine.Components;
 using RaspberryEngine.Screens;
+using RaspberryEngine.Network;
 
 namespace RaspberryEngine
 {
@@ -20,10 +23,21 @@ namespace RaspberryEngine
     public class ScreenManager : DrawableGameComponent
     {
         #region Fields
+        bool NetworkEnabled = false;
 
-        private AssetsManager Assets;
+        private NetworkManager NetworkManager;
+        public NetworkManager Network
+        {
+            get { return NetworkManager; }
+        }
+
+        private AssetsManager AssetsManager;
+        public AssetsManager Assets
+        {
+            get { return AssetsManager; }
+        }
+
         private GraphicsDeviceManager Graphics;
-
 
     	private FPSCounter _fpsCounter;
         List<Screen> screens = new List<Screen>();
@@ -43,16 +57,33 @@ namespace RaspberryEngine
             get { return spriteBatch; }
         }
 
-       
-
         #endregion
 
+        /// <summary>
+        /// A constructor with Network disabled
+        /// </summary>
         public ScreenManager(Game game, GraphicsDeviceManager graphics)
             : base(game)
         {
-            Assets = new AssetsManager(Game.Content);
+            NetworkEnabled = false;
+
+            AssetsManager = new AssetsManager(Game.Content);
             Graphics = graphics;
-			_fpsCounter = new FPSCounter();
+            _fpsCounter = new FPSCounter();
+        }
+
+        /// <summary>
+        /// A constructor with Network enabled
+        /// </summary>
+        public ScreenManager(Game game, GraphicsDeviceManager graphics, string Server_ip, int Port, string UserName, string Password)
+            : base(game)
+        {
+            NetworkEnabled = true;
+            NetworkManager = new NetworkManager(Server_ip, Port, UserName, Password);
+
+            AssetsManager = new AssetsManager(Game.Content);
+            Graphics = graphics;
+            _fpsCounter = new FPSCounter();
         }
 
         public override void Initialize()
@@ -73,9 +104,10 @@ namespace RaspberryEngine
         /// <summary>
         /// Unload your graphics content.
         /// </summary>
-        protected override void UnloadContent()
+        public void Exit()
         {
-            Assets.Unload();
+            AssetsManager.Unload();
+            NetworkManager.Disconnect();
             base.UnloadContent();
         }
 
@@ -84,6 +116,9 @@ namespace RaspberryEngine
         /// </summary>
         public override void Update(GameTime gameTime)
         {
+            if (NetworkEnabled)
+                NetworkManager.Update();
+
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
             screens[0].Update(gameTime);
@@ -157,7 +192,7 @@ namespace RaspberryEngine
             }
             screen.RenderTarget = new RenderTarget2D(this.GraphicsDevice, screen.RendertargetWidth, screen.RendertargetHeight);
             screens.Insert(0,screen);
-            Assets.AddScreensAssets(screen.Assets);
+            AssetsManager.AddScreensAssets(screen.Assets);
 
             screens[0].Initialize();
         }
@@ -168,7 +203,7 @@ namespace RaspberryEngine
         public void RemoveScreen(Screen screen)
         {
             screens.Remove(screen);
-            Assets.RemoveScreensAssets(screen.Assets);
+            AssetsManager.RemoveScreensAssets(screen.Assets);
         }
 
         /// <summary>
@@ -188,10 +223,10 @@ namespace RaspberryEngine
             }
             screen.RenderTarget = new RenderTarget2D(this.GraphicsDevice, screen.RendertargetWidth, screen.RendertargetHeight);
             screens.Insert(0, screen);
-            Assets.AddScreensAssets(screen.Assets);
+            AssetsManager.AddScreensAssets(screen.Assets);
 
             //remove the old screens assets
-            Assets.RemoveScreensAssets(screen.Assets);
+            AssetsManager.RemoveScreensAssets(screen.Assets);
 
             screens[0].Initialize();
         }
@@ -206,20 +241,10 @@ namespace RaspberryEngine
             return screens.ToArray();
         }
 
-        /// <summary>
-        /// Expose an array holding all the screens. We return a copy rather
-        /// than the real master list, because screens should only ever be added
-        /// or removed using the AddScreen and RemoveScreen methods.
-        /// </summary>
-        public Object GetAsset (string Key)
-		{
-			return Assets.GetAsset (Key);
-		}
-		
 		public bool HighRes
 		{
-            get { return Assets.HighRes; }
-            set { Assets.HighRes = value; }
+            get { return AssetsManager.HighRes; }
+            set { AssetsManager.HighRes = value; }
 		}
 
     	public int FrameRate{

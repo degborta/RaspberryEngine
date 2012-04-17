@@ -40,8 +40,9 @@
     <Reference Include="GamepadConfigControls">
       <HintPath>..\ThirdParty\MonoGame\Windows\GamepadConfigControls.dll</HintPath>
     </Reference>
-    <Reference Include="Lidgren.Network">
-      <HintPath>..\ThirdParty\MonoGame\Windows\Lidgren.Network.dll</HintPath>
+    <Reference Include="Lidgren.Network, Version=2011.3.12.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ThirdParty\Lidgren\Lidgren.Network\bin\Debug\Lidgren.Network.dll</HintPath>
     </Reference>
     <Reference Include="MonoGame.Framework.Windows">
       <HintPath>..\ThirdParty\MonoGame\Windows\MonoGame.Framework.Windows.dll</HintPath>
@@ -76,6 +77,7 @@
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Helpers\GameHelper.cs" />
     <Compile Include="Input\InputState.cs" />
+    <Compile Include="Network\NetworkManager.cs" />
     <Compile Include="Particles\Emitter.cs" />
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="Physics\ConvertUnits.cs" />
