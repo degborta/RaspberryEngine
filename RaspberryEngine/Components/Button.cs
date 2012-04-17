@@ -10,9 +10,10 @@ namespace RaspberryEngine.Components
 
         public Button(string name) { Name = name; PrewTouch = false; }
 
-        public virtual Rectangle getBound()
+        public virtual Rectangle Bound
         {
-            return Rectangle.Empty;
+            get { return Rectangle.Empty; }
+            set { }
         }
 
         public virtual bool Update(TouchCollection Touch)
@@ -23,17 +24,17 @@ namespace RaspberryEngine.Components
 
     public class ButtonRectangle : Button
     {
-        public Rectangle Bound;
+        public Rectangle bound;
 
-        public ButtonRectangle(string name, Rectangle bound) 
+        public ButtonRectangle(string name, Rectangle bound)
             : base(name)
-        { Bound = bound; }
+        { bound = bound; }
 
         public override bool Update(TouchCollection Touch)
         {
             foreach (TouchLocation t in Touch)
             {
-                if (Bound.Contains(t.Position))
+                if (bound.Contains(t.Position))
                 {
                     if (PrewTouch == false)
                     { PrewTouch = true; return true; }
@@ -43,9 +44,10 @@ namespace RaspberryEngine.Components
             return false;
         }
 
-        public override Rectangle getBound()
+        public override Rectangle Bound
         {
-            return Bound;
+            get { return bound; }
+            set { bound = value; }
         }
     }
 
@@ -75,13 +77,21 @@ namespace RaspberryEngine.Components
             return false;
         }
 
-        public override Rectangle getBound()
+        public override Rectangle Bound
         {
-            return new Rectangle(
-                (int)(Position.X - Radius), 
-                (int)(Position.Y - Radius), 
-                (int)(Position.X + Radius), 
-                (int)(Position.Y + Radius));
+            get
+            {
+                return new Rectangle(
+                   (int)(Position.X - Radius),
+                   (int)(Position.Y - Radius),
+                   (int)(Position.X + Radius),
+                   (int)(Position.Y + Radius));
+            }
+            set
+            {
+                Position = new Vector2(value.Center.X, value.Center.Y);
+                Radius = (value.Height + value.Width) / 4;
+            }
         }
     }
 }
