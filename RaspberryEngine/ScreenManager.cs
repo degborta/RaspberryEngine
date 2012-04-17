@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using RaspberryEngine.Assets;
 using RaspberryEngine.Components;
 using RaspberryEngine.Screens;
@@ -54,8 +56,6 @@ namespace RaspberryEngine
         {
             get { return spriteBatch; }
         }
-
-       
 
         #endregion
 
@@ -118,6 +118,7 @@ namespace RaspberryEngine
         {
             if (NetworkEnabled)
                 NetworkManager.Update();
+
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
             screens[0].Update(gameTime);
