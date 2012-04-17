@@ -9,7 +9,7 @@ using RaspberryEngine.Assets;
 using RaspberryEngine.Components;
 using RaspberryEngine.Screens;
 
-namespace Extrude.Framework
+namespace RaspberryEngine
 {
     /// <summary>
     /// The screen manager is a class which manages one or more Screen
