@@ -58,8 +58,16 @@ namespace RaspberryEngine.Network
         public void Update()
         {
             Incomming.Clear();
+
             //Add incomming messages to Incomming
-            Client.ReadMessages(Incomming);
+            bool fetching = true;
+            while (fetching)
+            {
+                NetIncomingMessage incom = Client.ReadMessage();
+                if (incom != null)
+                    Incomming.Add(incom);
+                else fetching = false;
+            }
 
             //Confirm Connection
             if (!Connected && Incomming.Count > 0)
