@@ -125,7 +125,7 @@ namespace RaspberryEngine
 
 			// Make sure to update the fpscounter
 			_fpsCounter.Update(gameTime);
-
+            _fpsCounter.IncrementUpdate();
             base.Update(gameTime);
 		}
 
@@ -134,8 +134,6 @@ namespace RaspberryEngine
         /// </summary>
         public override void Draw (GameTime gameTime)
         {
-        	_fpsCounter.IncrementFrameCount();
-
 			GraphicsDevice.Clear (Color.CornflowerBlue);
 			
 			//Update the draw for the active screen
@@ -148,6 +146,7 @@ namespace RaspberryEngine
 			}
 			spriteBatch.End ();
 
+            _fpsCounter.IncrementDraw();
 		}
 
         /// <summary>
@@ -247,9 +246,9 @@ namespace RaspberryEngine
             set { AssetsManager.HighRes = value; }
 		}
 
-    	public int FrameRate{
+    	public string FrameUpdateRate{
     		get{
-    			return _fpsCounter.FrameRate;
+    			return _fpsCounter.FrameUpdateRate;
     		}
     	}
     }

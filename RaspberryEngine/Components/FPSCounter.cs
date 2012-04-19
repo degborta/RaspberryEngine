@@ -4,15 +4,18 @@ using Microsoft.Xna.Framework;
 namespace RaspberryEngine.Components {
 	class FPSCounter {
 		// FPS status
-		private int _frameRate = 0;
-		private int _frameCounter = 0;
+		private int _drawRate = 0;
+		private int _drawCounter = 0;
+
+
+        private int _updateRate = 0;
+        private int _updateCounter = 0;
 		private TimeSpan _elapsedTime = TimeSpan.Zero;
 		
-		public int FrameRate { 
-			get{
-				return _frameRate;
-			}
+		public string FrameUpdateRate { 
+			get{ return "UPS: " + _updateRate.ToString() + " DPS: " + _drawRate.ToString(); }
 		}
+
         public FPSCounter(){}
 
         public void Update(GameTime gameTime)
@@ -20,15 +23,25 @@ namespace RaspberryEngine.Components {
 			//Update framerate
 			_elapsedTime += gameTime.ElapsedGameTime;
 
-			if (_elapsedTime > TimeSpan.FromSeconds(1)) {
+			if (_elapsedTime > TimeSpan.FromSeconds(1)) 
+            {
 				_elapsedTime -= TimeSpan.FromSeconds(1);
-				_frameRate = _frameCounter;
-				_frameCounter = 0;
+
+				_updateRate = _updateCounter;
+                _updateCounter = 0;
+
+                _drawRate = _drawCounter;
+                _drawCounter = 0;
 			}
         }
 
-		public void IncrementFrameCount(){
-			_frameCounter++;
+		public void IncrementUpdate()
+        {
+			_updateCounter++;
 		}
+        public void IncrementDraw()
+        {
+            _drawCounter++;
+        }
 	}
 }
