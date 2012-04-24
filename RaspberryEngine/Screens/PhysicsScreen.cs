@@ -22,7 +22,7 @@ namespace RaspberryEngine.Screens {
 			}
 
 			// Loading may take a while... so prevent the game from "catching up" once we finished loading
-			ScreenManager.Game.ResetElapsedTime();
+			ScreenManager.ResetElapsedTime();
 		}
 
 		public override void Update(Microsoft.Xna.Framework.GameTime gameTime) {

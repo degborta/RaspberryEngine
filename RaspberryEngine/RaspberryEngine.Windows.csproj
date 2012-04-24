@@ -81,7 +81,7 @@
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="Physics\ConvertUnits.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScreenManager.cs" />
+    <Compile Include="RaspberryEngine.cs" />
     <Compile Include="Screens\IScreen.cs" />
     <Compile Include="Screens\PhysicsScreen.cs" />
     <Compile Include="Screens\Screen.cs" />
