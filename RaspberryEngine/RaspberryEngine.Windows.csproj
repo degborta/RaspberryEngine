@@ -70,13 +70,12 @@
     <Compile Include="Components\Menu.cs" />
     <Compile Include="Geometry\Circle.cs" />
     <Compile Include="Geometry\ExtendedRectangle.cs" />
-    <Compile Include="Graphics\AnimatedSprite.cs" />
     <Compile Include="Graphics\Sprite.cs" />
-    <Compile Include="Graphics\SpriteSheet.cs" />
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Helpers\GameHelper.cs" />
     <Compile Include="Input\InputState.cs" />
     <Compile Include="Network\NetworkManager.cs" />
+    <Compile Include="Particles\EmitterSettings.cs" />
     <Compile Include="Particles\Emitter.cs" />
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="Physics\ConvertUnits.cs" />

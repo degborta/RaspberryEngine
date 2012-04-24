@@ -11,52 +11,52 @@ namespace RaspberryEngine.Assets
     {
         public bool HighRes;
 
-        private ContentManager Content;
+        private ContentManager _contentManager;
 
-        private List<Texture2D> Textures;
-        private List<SpriteFont> Fonts;
-        private List<SoundEffect> Sounds;
-        private List<Song> Songs;
-        private List<Video> Videos;
-        private List<LoadableAsset> Assets;
+        private List<Texture2D> _textures;
+        private List<SpriteFont> _fonts;
+        private List<SoundEffect> _sounds;
+        private List<Song> _songs;
+        private List<Video> _videos;
+        private List<LoadableAsset> _assets;
 
         public AssetsManager(ContentManager contentManager)
         {
-            Content = contentManager;
-            Textures = new List<Texture2D>();
-            Fonts = new List<SpriteFont>();
-            Sounds = new List<SoundEffect>();
-            Songs = new List<Song>();
-            Videos = new List<Video>();
+            _contentManager = contentManager;
+            _textures = new List<Texture2D>();
+            _fonts = new List<SpriteFont>();
+            _sounds = new List<SoundEffect>();
+            _songs = new List<Song>();
+            _videos = new List<Video>();
 
-            Assets = new List<LoadableAsset>();
+            _assets = new List<LoadableAsset>();
         }
 
-        public void RemoveScreensAssets(List<LoadableAsset> ScreenAssets)
+        public void RemoveScreensAssets(List<LoadableAsset> screenAssets)
         {
             //Update the usage counter on all assets currently loaded
-            foreach (LoadableAsset assetToRemove in ScreenAssets)
-                foreach (LoadableAsset asset in Assets)
+            foreach (LoadableAsset assetToRemove in screenAssets)
+                foreach (LoadableAsset asset in _assets)
                 {
                     if (assetToRemove.Key == asset.Key)
                         asset.Usage--;
                 }
 
             //Remove the assets that are not being used
-            for(int i = Assets.Count-1; i < 0; i--)
-                if (Assets[i].Usage == 0)
-                    Assets.Remove(Assets[i]);
+            for(int i = _assets.Count-1; i < 0; i--)
+                if (_assets[i].Usage == 0)
+                    _assets.Remove(_assets[i]);
         }
 
-        public void AddScreensAssets(List<LoadableAsset> ScreenAssets)
+        public void AddScreensAssets(List<LoadableAsset> screenAssets)
         {
             //Add assets that has not ben loaded
-            foreach (LoadableAsset assetToAdd in ScreenAssets)
+            foreach (LoadableAsset assetToAdd in screenAssets)
             {
                 bool exist = false;
 
                 //If asset is loaded add one to the asstes Usage counter
-                foreach (LoadableAsset asset in Assets)
+                foreach (LoadableAsset asset in _assets)
                     if (assetToAdd.Key == asset.Key)
                     { exist = true; asset.Usage++; }
 
@@ -78,8 +78,8 @@ namespace RaspberryEngine.Assets
                             if (HighRes)
                                 filePath += "@2x";
 
-                            newAsset.Index = Textures.Count; // Write the index of the Texture
-                            Textures.Add(Content.Load<Texture2D>(filePath));
+                            newAsset.Index = _textures.Count; // Write the index of the Texture
+                            _textures.Add(_contentManager.Load<Texture2D>(filePath));
                             break;
 
                         case AssetType.Font:
@@ -88,30 +88,30 @@ namespace RaspberryEngine.Assets
                             if (HighRes)
                                 filePath += "@2x";
 
-                            newAsset.Index = Fonts.Count; // Write the index of the Font
-                            Fonts.Add(Content.Load<SpriteFont>(filePath));
+                            newAsset.Index = _fonts.Count; // Write the index of the Font
+                            _fonts.Add(_contentManager.Load<SpriteFont>(filePath));
                             break;
 
                         case AssetType.Sound:
 
-                            newAsset.Index = Sounds.Count; // Write the index of the Sound
-                            Sounds.Add(Content.Load<SoundEffect>(newAsset.FileName));
+                            newAsset.Index = _sounds.Count; // Write the index of the Sound
+                            _sounds.Add(_contentManager.Load<SoundEffect>(newAsset.FileName));
                             break;
 
                         case AssetType.Song:
 
-                            newAsset.Index = Songs.Count; // Write the index of the Song
-                            Songs.Add(Content.Load<Song>(newAsset.FileName));
+                            newAsset.Index = _songs.Count; // Write the index of the Song
+                            _songs.Add(_contentManager.Load<Song>(newAsset.FileName));
                             break;
 
                         case AssetType.Video:
 
-                            newAsset.Index = Videos.Count; // Write the index of the Video
-                            Videos.Add(Content.Load<Video>(newAsset.FileName));
+                            newAsset.Index = _videos.Count; // Write the index of the Video
+                            _videos.Add(_contentManager.Load<Video>(newAsset.FileName));
                             break;
                     }
                     //Add asset to our assets list
-                    Assets.Add(newAsset);
+                    _assets.Add(newAsset);
                 }
 
             }
@@ -123,38 +123,38 @@ namespace RaspberryEngine.Assets
         /// </summary>
         public void Unload()
         {
-            Content.Unload();
+            _contentManager.Unload();
 
-            Textures.Clear();
-            Fonts.Clear();
-            Sounds.Clear();
-            Songs.Clear();
-            Videos.Clear();
+            _textures.Clear();
+            _fonts.Clear();
+            _sounds.Clear();
+            _songs.Clear();
+            _videos.Clear();
 
-            Assets.Clear();
+            _assets.Clear();
         }
 
         public Object GetAsset(string Key)
         {
-            foreach (LoadableAsset asset in Assets)
+            foreach (LoadableAsset asset in _assets)
             {
                 if (Key == asset.Key)
                     switch (asset.Type)
                     {
                         case AssetType.Texture:
-                            return Textures[asset.Index];
+                            return _textures[asset.Index];
 
                         case AssetType.Font:
-                            return Fonts[asset.Index];
+                            return _fonts[asset.Index];
 
                         case AssetType.Sound:
-                            return Sounds[asset.Index];
+                            return _sounds[asset.Index];
 
                         case AssetType.Song:
-                            return Songs[asset.Index];
+                            return _songs[asset.Index];
 
                         case AssetType.Video:
-                            return Videos[asset.Index];
+                            return _videos[asset.Index];
                     }
             }
             return null;
