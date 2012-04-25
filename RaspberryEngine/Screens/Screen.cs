@@ -60,21 +60,21 @@ namespace RaspberryEngine.Screens
             for (int i = _sprites.Count - 1; i >= 0; i--)
             {
                 // update Animation frames
-                if (_sprites[i]._Animated)
-                    _sprites[i]._Frame++;
+                if (_sprites[i].Animated)
+                    _sprites[i].Frame++;
                 // remove all oneSteps
-                if (_sprites[i]._OneStep)
+                if (_sprites[i].OneStep)
                     _sprites.RemoveAt(i);
             }
 
             for (int i = _texts.Count - 1; i >= 0; i--)
                 // remove all oneSteps
-                if (_texts[i]._OneStep)
+                if (_texts[i].OneStep)
                     _texts.RemoveAt(i);
 
             //Update particles and remove them if they are out of lifes
             for (int i = _particles.Count - 1; i >= 0; i--)
-                if (_particles[i].update())
+                if (_particles[i].Update())
                     _particles.RemoveAt(i);
 
             //Update all emitters and add new particles to _Particles
@@ -101,23 +101,23 @@ namespace RaspberryEngine.Screens
 
             foreach (Sprite s in _sprites)
             {
-                if (s._Frame == null)
+                if (s.Frame == null)
                 {
-                    if(s._Area == null)
-                        ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(s._TextureKey), s._Position, null, s._Color, s._Angle, s._Orgin, s._Scale, SpriteEffects.None, s._Depth);
-                    else ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(s._TextureKey), s._Area.Value, null, s._Color, s._Angle, s._Orgin, SpriteEffects.None, s._Depth);
+                    if(s.Area == null)
+                        ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(s.TextureKey), s.Position, null, s.Color, s.Angle, s.Origin, s.Scale, SpriteEffects.None, s.Depth);
+                    else ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(s.TextureKey), s.Area.Value, null, s.Color, s.Angle, s.Origin, SpriteEffects.None, s.Depth);
                 }
                 else
                 {
-                    if(s._Area == null)
-                        ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(s._TextureKey), s._Position, GameHelper.getAnimationFrame(s._Frame.Value, (Texture2D)ScreenManager.AssetsManager.GetAsset(s._TextureKey)), s._Color, s._Angle, s._Orgin, s._Scale, SpriteEffects.None, s._Depth);
-                    else ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(s._TextureKey), s._Area.Value, GameHelper.getAnimationFrame(s._Frame.Value, (Texture2D)ScreenManager.AssetsManager.GetAsset(s._TextureKey)), s._Color, s._Angle, s._Orgin, SpriteEffects.None, s._Depth);
+                    if(s.Area == null)
+                        ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(s.TextureKey), s.Position, GameHelper.GetAnimationFrame(s.Frame.Value, (Texture2D)ScreenManager.AssetsManager.GetAsset(s.TextureKey)), s.Color, s.Angle, s.Origin, s.Scale, SpriteEffects.None, s.Depth);
+                    else ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(s.TextureKey), s.Area.Value, GameHelper.GetAnimationFrame(s.Frame.Value, (Texture2D)ScreenManager.AssetsManager.GetAsset(s.TextureKey)), s.Color, s.Angle, s.Origin, SpriteEffects.None, s.Depth);
                 }
             } 
 
             foreach (Text s in _texts)
             {
-                ScreenManager.SpriteBatch.DrawString((SpriteFont)ScreenManager.AssetsManager.GetAsset(s._FontKey), s._Text, s._Position, s._Color, s._Angle, s._Orgin, s._Scale, SpriteEffects.None, s._Depth);
+                ScreenManager.SpriteBatch.DrawString((SpriteFont)ScreenManager.AssetsManager.GetAsset(s.FontKey), s.TextString, s.Position, s.Color, s.Angle, s.Origin, s.Scale, SpriteEffects.None, s.Depth);
             }
 
 			ScreenManager.SpriteBatch.End();
@@ -127,9 +127,9 @@ namespace RaspberryEngine.Screens
                    null, null, null, _camera.get_transformation(ScreenManager.GraphicsDevice));
 
 			foreach (Particle p in _particles) {
-                ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(p._TextureKey), p._Position, null, p._Color, p._Angle,
-                new Vector2(((Texture2D)ScreenManager.AssetsManager.GetAsset(p._TextureKey)).Width / 2, ((Texture2D)ScreenManager.AssetsManager.GetAsset(p._TextureKey)).Height / 2),
-                p._Scale, SpriteEffects.None, 0f);
+                ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(p.TextureKey), p.Position, null, p._color, p.Angle,
+                new Vector2(((Texture2D)ScreenManager.AssetsManager.GetAsset(p.TextureKey)).Width / 2, ((Texture2D)ScreenManager.AssetsManager.GetAsset(p.TextureKey)).Height / 2),
+                p._scale, SpriteEffects.None, 0f);
 			}
 			ScreenManager.SpriteBatch.End ();
 

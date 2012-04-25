@@ -18,7 +18,7 @@ namespace RaspberryEngine.Helpers
             return sourcerect;
         }
 
-        public static Vector2 GetOrgin(Texture2D texture)
+        public static Vector2 GetOrigin(Texture2D texture)
         {
             return new Vector2(texture.Width/2,texture.Height/2);
         }
