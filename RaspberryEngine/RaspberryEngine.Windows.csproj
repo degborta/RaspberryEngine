@@ -68,6 +68,7 @@
     <Compile Include="Components\Camera.cs" />
     <Compile Include="Components\FPSCounter.cs" />
     <Compile Include="Components\Menu.cs" />
+    <Compile Include="Debug\Logger.cs" />
     <Compile Include="Geometry\Circle.cs" />
     <Compile Include="Geometry\ExtendedRectangle.cs" />
     <Compile Include="Graphics\Sprite.cs" />
@@ -87,7 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Audio\" />
-    <Folder Include="Debug\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

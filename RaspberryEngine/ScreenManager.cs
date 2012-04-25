@@ -31,8 +31,8 @@ namespace RaspberryEngine
             get { return NetworkManager; }
         }
 
-        private AssetsManager AssetsManager;
-        public AssetsManager Assets
+        private AssetsManager _AssetsManager;
+        public AssetsManager AssetsManager
         {
             get { return AssetsManager; }
         }
@@ -67,7 +67,7 @@ namespace RaspberryEngine
         {
             NetworkEnabled = false;
 
-            AssetsManager = new AssetsManager(Game.Content);
+            _AssetsManager = new AssetsManager(Game.Content);
             Graphics = graphics;
             _fpsCounter = new FPSCounter();
         }
@@ -81,7 +81,7 @@ namespace RaspberryEngine
             NetworkEnabled = true;
             NetworkManager = new NetworkManager(Server_ip, Port, UserName, Password);
 
-            AssetsManager = new AssetsManager(Game.Content);
+            _AssetsManager = new AssetsManager(Game.Content);
             Graphics = graphics;
             _fpsCounter = new FPSCounter();
         }

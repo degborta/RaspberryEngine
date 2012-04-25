@@ -22,7 +22,7 @@ namespace RaspberryEngine.Helpers
         {
             return new Vector2(texture.Width/2,texture.Height/2);
         }
-        public static Vector2 GetOrgin(Rectangle rectangle)
+        public static Vector2 GetOrigin(Rectangle rectangle)
         {
             return new Vector2(rectangle.Width / 2, rectangle.Height / 2);
         }

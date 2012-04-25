@@ -84,10 +84,10 @@ namespace RaspberryEngine.Components
                 switch (align)
                 {
                     case MenuAlign.Center:
-                        orginX = ((SpriteFont)screen.ScreenManager.Assets.GetAsset(fontKey)).MeasureString(optionsMenu[s]).X / 2 - bound.Width / 2;
+						orginX = ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(fontKey)).MeasureString(optionsMenu[s]).X / 2 - bound.Width / 2;
                         break;
                     case MenuAlign.Right:
-                        orginX = ((SpriteFont)screen.ScreenManager.Assets.GetAsset(fontKey)).MeasureString(optionsMenu[s]).X - bound.Width;
+						orginX = ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(fontKey)).MeasureString(optionsMenu[s]).X - bound.Width;
                         break;
                     default:
                         orginX = 0;
@@ -120,7 +120,7 @@ namespace RaspberryEngine.Components
             foreach (string s in newMenuOptions)
             {
                 //measure the current string to find the largest string (we use this as the size of the buttons)
-                Vector2 measure = ((SpriteFont)screen.ScreenManager.Assets.GetAsset(fontKey)).MeasureString(s.ToUpper());
+				Vector2 measure = ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(fontKey)).MeasureString(s.ToUpper());
 
                 if (measure.X > optionsBound.Width)
                     optionsBound.Width = (int)Math.Ceiling(measure.X);
