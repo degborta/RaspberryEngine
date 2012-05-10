@@ -44,7 +44,6 @@ namespace RaspberryEngine.Screens
             _emitters = new List<Emitter>();
             _particles = new List<Particle>();
             Assets = new List<LoadableAsset>();
-
         }
 
         public virtual void Initialize() { }
@@ -56,7 +55,6 @@ namespace RaspberryEngine.Screens
         /// </summary>
         public virtual void Update(GameTime gameTime)
         {
-
             for (int i = _sprites.Count - 1; i >= 0; i--)
             {
                 // update Animation frames
@@ -66,7 +64,7 @@ namespace RaspberryEngine.Screens
                 if (_sprites[i].OneStep)
                     _sprites.RemoveAt(i);
             }
-
+            
             for (int i = _texts.Count - 1; i >= 0; i--)
                 // remove all oneSteps
                 if (_texts[i].OneStep)

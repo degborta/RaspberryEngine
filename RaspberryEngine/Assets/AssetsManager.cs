@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
-using RaspberryEngine.Debug;
 
 namespace RaspberryEngine.Assets
 {
@@ -31,45 +30,28 @@ namespace RaspberryEngine.Assets
 			_videos = new List<Video>();
 
 			_assets = new List<LoadableAsset>();
-
-
-			Logger.Log("AssetsManager created");
-
 		}
 
 		public void RemoveScreensAssets(List<LoadableAsset> screenAssets)
 		{
-
-			
-
 			//Update the usage counter on all assets currently loaded
 			foreach (LoadableAsset assetToRemove in screenAssets) {
 				foreach (LoadableAsset asset in _assets)
 				{
-					if (assetToRemove.Key == asset.Key){
-						Logger.Log("AssetsManager - Reset usage " + assetToRemove.Key);
+					if (assetToRemove.Key == asset.Key)
 						asset.Usage--;
-					}
 				}
 			}
 
 			//Remove the assets that are not being used
 			for (int i = _assets.Count - 1; i < 0; i--) {
-				if (_assets[i].Usage == 0){
-					Logger.Log("AssetsManager - Removing asset " + _assets[i].Key);
+				if (_assets[i].Usage == 0)
 					_assets.Remove(_assets[i]);
-					
-				}
-					
 			}
 		}
 
 		public void AddScreensAssets(List<LoadableAsset> screenAssets)
 		{
-		
-
-			Logger.Log("AssetsManager - AddScreenAssets");
-	
 			//Add assets that has not ben loaded
 			foreach (LoadableAsset assetToAdd in screenAssets)
 			{
@@ -94,9 +76,6 @@ namespace RaspberryEngine.Assets
 					{
 						case AssetType.Texture:
 
-							
-							Logger.Log("Loading texture - "+newAsset.FileName);
-						
 							filePath = newAsset.FileName;
 
 							if (HighRes)
@@ -107,8 +86,6 @@ namespace RaspberryEngine.Assets
 							break;
 
 						case AssetType.Font:
-
-							Logger.Log("Loading font - " + newAsset.FileName);
 
 							filePath = newAsset.FileName;
 
@@ -121,23 +98,17 @@ namespace RaspberryEngine.Assets
 
 						case AssetType.Sound:
 
-							Logger.Log("Loading sound - " + newAsset.FileName);
-
 							newAsset.Index = _sounds.Count; // Write the index of the Sound
 							_sounds.Add(_contentManager.Load<SoundEffect>(newAsset.FileName));
 							break;
 
 						case AssetType.Song:
 
-							Logger.Log("Loading song - " + newAsset.FileName);
-
 							newAsset.Index = _songs.Count; // Write the index of the Song
 							_songs.Add(_contentManager.Load<Song>(newAsset.FileName));
 							break;
 
 						case AssetType.Video:
-
-							Logger.Log("Loading video - " + newAsset.FileName);
 
 							newAsset.Index = _videos.Count; // Write the index of the Video
 							_videos.Add(_contentManager.Load<Video>(newAsset.FileName));
@@ -156,9 +127,6 @@ namespace RaspberryEngine.Assets
 		/// </summary>
 		public void Unload()
 		{
-
-			Logger.Log("AssetsManager - Unload");
-
 			_contentManager.Unload();
 
 			_textures.Clear();
@@ -172,10 +140,6 @@ namespace RaspberryEngine.Assets
 
 		public Object GetAsset(string Key)
 		{
-
-			Logger.Log("AssetsManager - RemoveScreensAssets");
-
-			
 			foreach (LoadableAsset asset in _assets)
 			{
 				if (Key == asset.Key)

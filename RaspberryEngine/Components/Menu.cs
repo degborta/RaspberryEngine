@@ -75,7 +75,7 @@ namespace RaspberryEngine.Components
             for (int s = 0; s < optionsMenu.Count; s++)
             {
                 Rectangle bound = optionsBound;
-                Vector2 position = new Vector2((startPosition.X) - bound.Width / 2, startPosition.Y + (s * (optionsBound.Height * spacing)));
+                Vector2 position = new Vector2((startPosition.X) - bound.Width / 2f, startPosition.Y + (s * (optionsBound.Height * spacing)));
                 bound.X = (int)position.X;
                 bound.Y = (int)position.Y;
 
@@ -84,7 +84,7 @@ namespace RaspberryEngine.Components
                 switch (align)
                 {
                     case MenuAlign.Center:
-                        orginX = ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(fontKey)).MeasureString(optionsMenu[s]).X / 2 - bound.Width / 2;
+                        orginX = ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(fontKey)).MeasureString(optionsMenu[s]).X / 2 - bound.Width / 2f;
                         break;
                     case MenuAlign.Right:
                         orginX = ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(fontKey)).MeasureString(optionsMenu[s]).X - bound.Width;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RaspberryEngine.Debug;
 
 namespace RaspberryEngine.Components
 {
@@ -13,10 +12,6 @@ namespace RaspberryEngine.Components
 
         public Camera()
         {
-
-			Logger.Log("Camera created");
-
-			
             _zoom = 1.0f;
             _rotation = 0.0f;
             _pos = Vector2.Zero;

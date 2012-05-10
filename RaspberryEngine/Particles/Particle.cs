@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using RaspberryEngine.Debug;
 
 namespace RaspberryEngine.Particles
 {
@@ -22,7 +21,6 @@ namespace RaspberryEngine.Particles
 		public Particle(string textureKey, Vector2 position, Vector2 velocity, float angle, float angleVelocity,
 			Color color1, Color color2, Color color3, float scale, float scaleVelocity, float lifeVelocity)
 		{
-			Logger.Log("Particle created");
 			this.TextureKey = textureKey;
 			this.Position = position;
 			this.Angle = angle;

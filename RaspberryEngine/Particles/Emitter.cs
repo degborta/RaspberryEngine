@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using RaspberryEngine.Debug;
 
 namespace RaspberryEngine.Particles
 {
@@ -26,7 +25,6 @@ namespace RaspberryEngine.Particles
             _position = position;
             _textureKey = textureKey;
             _settings = emitterSettings;
-        	Logger.Log("Emitter created");
         }
 
         public List<Particle> Update(Vector2? position, Vector2 gravity)
@@ -50,7 +48,6 @@ namespace RaspberryEngine.Particles
 
         private Particle GenerateParticle()
         {
-			Logger.Log("Emitter - GenerateParticle");
             float velocityAngle = MathHelper.Lerp(_settings.MinVelocityAngle, _settings.MaxVelocityAngle, (float)_random.NextDouble());
             Vector2 velocity = MathHelper.Lerp(_settings.MinVelocity, _settings.MaxVelocity, (float)_random.NextDouble()) * new Vector2((float)Math.Sin(MathHelper.ToRadians(velocityAngle)), (float)Math.Cos(MathHelper.ToRadians(velocityAngle)));
             float angle = MathHelper.Lerp(_settings.MinAngle, _settings.MaxAngle, (float)_random.NextDouble());

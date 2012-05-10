@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using RaspberryEngine.Debug;
 
 namespace RaspberryEngine.Graphics
 {
@@ -22,10 +21,6 @@ namespace RaspberryEngine.Graphics
             if (Frame == null)
                 Animated = false;
             else Animated = animated;
-
-		
-			Logger.Log("Sprite created with key "+textureKey);
-
         }
 
 		private bool _oneStep;

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using RaspberryEngine.Debug;
 
 namespace RaspberryEngine.Graphics
 {
@@ -18,10 +17,6 @@ namespace RaspberryEngine.Graphics
             _angle = angle;
             _color = color;
             _depth = depth;
-
-
-			Logger.Log("Text created with font " + fontKey);
-
         }
 
 

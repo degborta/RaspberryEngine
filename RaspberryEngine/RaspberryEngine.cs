@@ -1,12 +1,7 @@
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Input.Touch;
 using RaspberryEngine.Assets;
 using RaspberryEngine.Components;
 using RaspberryEngine.Screens;
@@ -22,113 +17,66 @@ namespace RaspberryEngine
     /// </summary>
     public class Engine : Game
     {
-        #region Fields
+        private readonly GraphicsDeviceManager _graphics;
 
-        //Properties
-        private int _preferredBackBufferWidth;
-        public int PreferredBackBufferWidth
-        {
-            get { return _preferredBackBufferWidth; }
-            set { _preferredBackBufferWidth = value; }
-        }
+        private readonly EngineConfiguration _configuration;
 
-        private int _preferredBackBufferHeight;
-        public int PreferredBackBufferHeight
-        {
-            get { return _preferredBackBufferHeight; }
-            set { _preferredBackBufferHeight = value; }
-        }
+        public SpriteBatch SpriteBatch { get; private set; }
 
-        private int _targetFrameRate;
-        public int TargetFrameRate
-        {
-            get { return _targetFrameRate; }
-            set { _targetFrameRate = value; }
-        }
+        public Rectangle ScreenBounds { get; private set; }
 
-        private bool _useHighQualityContent;
-        public bool UseHighQualityContent
-        {
-            get { return _useHighQualityContent; }
-            set { _useHighQualityContent = value; }
-        }
+        public AssetsManager AssetsManager { get; private set; }
 
-        private string _contentDirectory;
-        public string ContentDirectory;
+        public bool NetworkEnabled { get; set; }
 
-        private DisplayOrientation _supportedOrientations;
-        public DisplayOrientation SupportedOrientations
-        {
-            set { _supportedOrientations = value; }
-        }
+        public FPSCounter FpsCounter { get; private set; }
 
-        private GraphicsDeviceManager _graphics;
+        public List<Screen> Screens { get; private set; }
 
-        private bool _networkEnabled;
-        public bool NetworkEnabled
-        {
-            get { return _networkEnabled; }
-            set { _networkEnabled = value; }
-        }
-
-        private Rectangle _screenBounds;
-        public Rectangle ScreenBounds
-        {
-            get { return _screenBounds; }
-        }
-
-        private NetworkManager _networkManager;
-        public NetworkManager NetworkManager
-        {
-            get { return _networkManager; }
-        }
-
-        private AssetsManager _assetsManager;
-        public AssetsManager AssetsManager
-        {
-            get { return _assetsManager; }
-        }
-
-        private SpriteBatch _spriteBatch;
-        public SpriteBatch SpriteBatch
-        {
-            get { return _spriteBatch; }
-        }
-
-        private List<Screen> _screens = new List<Screen>();
-        public List<Screen> Screens
-        {
-            get { return _screens; }
-        }
-
-        private FPSCounter _fpsCounter;
-        public FPSCounter FpsCounter
-        {
-            get { return _fpsCounter; }
-        }
-
-        #endregion
+        public NetworkManager NetworkManager { get; private set; }
 
         /// <summary>
         /// A constructor with Network disabled
         /// </summary>
-        public Engine()
+        public Engine(EngineConfiguration configuration)
         {
-            Content.RootDirectory = _contentDirectory;
-            _graphics = new GraphicsDeviceManager(this);
-            _assetsManager = new AssetsManager(Content);
-            _networkManager = new Network.NetworkManager();
-            _fpsCounter = new FPSCounter();
+            Screens = new List<Screen>();
+            IsFixedTimeStep = configuration.EnableFixedTimeStep;
 
-            // Framerate differs between platforms.
-            //IsFixedTimeStep = false;
-            //graphics.SynchronizeWithVerticalRetrace = false;
-            //graphics.IsFullScreen = true;
+            _graphics = new GraphicsDeviceManager(this)
+                            {
+                                PreferredBackBufferWidth = configuration.PreferredBackBufferWidth,
+                                PreferredBackBufferHeight = configuration.PreferredBackBufferHeight,
+                                IsFullScreen = configuration.EnableFullScreen,
+                                SynchronizeWithVerticalRetrace = configuration.EnableVerticalSync,
+                                SupportedOrientations = configuration.SupportedOrientations
+                            };
+            _graphics.DeviceReset += OnGraphicsComponentDeviceReset;
 
-            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / 30);
+            TargetElapsedTime = TimeSpan.FromTicks(TimeSpan.TicksPerSecond / configuration.TargetFrameRate);
+            
+            Content.RootDirectory = configuration.ContentDirectory;
 
-            _graphics.DeviceReset += new EventHandler<EventArgs>(OnGraphicsComponentDeviceReset);
-            _graphics.SupportedOrientations = _supportedOrientations;
+            NetworkManager = new NetworkManager
+                                 {
+                                     AppId = configuration.AppId,
+                                     Port = configuration.Port,
+                                     ServerIp = configuration.ServerIp,
+                                     Username = configuration.Username,
+                                     PassWord = configuration.Password
+                                 };
+
+            FpsCounter = new FPSCounter();
+
+            AssetsManager = new AssetsManager(Content)
+                                {
+                                    HighRes = configuration.EnableHighQualityContent
+                                };
+
+            ScreenBounds = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight); // This is used by the screens to get the size for the default rendertarget
+
+            _configuration = configuration;
+            AddScreen(_configuration.StartScreen);
         }
 
         protected void OnGraphicsComponentDeviceReset(object sender, EventArgs e)
@@ -138,6 +86,7 @@ namespace RaspberryEngine
 
         protected override void Initialize()
         {
+            
             base.Initialize();
         }
 
@@ -146,8 +95,7 @@ namespace RaspberryEngine
         /// </summary>
         protected override void LoadContent()
         {
-            _screenBounds = new Rectangle(0,0,_graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight); // This is used by the screens to get the size for the default rendertarget
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            SpriteBatch = new SpriteBatch(GraphicsDevice);
             base.LoadContent();
         }
 
@@ -157,46 +105,46 @@ namespace RaspberryEngine
         protected override void Update(GameTime gameTime)
         {
             if (NetworkEnabled)
-                _networkManager.Update();
+                NetworkManager.Update();
 
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
-            _screens[0].Update(gameTime);
+            Screens[0].Update(gameTime);
 
-			// Make sure to update the fpscounter
-			_fpsCounter.Update(gameTime);
-            _fpsCounter.IncrementCounter();
+            // Make sure to update the fpscounter
+            FpsCounter.Update(gameTime);
+            FpsCounter.IncrementCounter();
             base.Update(gameTime);
-		}
+        }
 
         /// <summary>
         /// Tells each screen to draw itself.
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-			GraphicsDevice.Clear (Color.CornflowerBlue);
-			
-			//Update the draw for the active screen
-			_screens [0].Draw (gameTime);
-			
-			_spriteBatch.Begin ();
-			foreach (Screen s in _screens)
-            {
-				_spriteBatch.Draw (s.RenderTexture, _screenBounds, Color.White);
-			}
-			_spriteBatch.End ();
+            GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _fpsCounter.IncrementCounter();
+            //Update the draw for the active screen
+            Screens[0].Draw(gameTime);
+
+            SpriteBatch.Begin();
+            foreach (Screen s in Screens)
+            {
+                SpriteBatch.Draw(s.RenderTexture, ScreenBounds, Color.White);
+            }
+            SpriteBatch.End();
+
+            FpsCounter.IncrementCounter();
             base.Draw(gameTime);
-		}
-        
+        }
+
         /// <summary>
         /// Unload your graphics content.
         /// </summary>
         public void Exit()
         {
-            _assetsManager.Unload();
-            _networkManager.Disconnect();
+            AssetsManager.Unload();
+            NetworkManager.Disconnect();
             base.UnloadContent();
         }
 
@@ -208,14 +156,14 @@ namespace RaspberryEngine
             screen.ScreenManager = this;
             if (screen.RendertargetWidth == 0 && screen.RendertargetHeight == 0)
             {
-                screen.RendertargetWidth = _screenBounds.Width;
-                screen.RendertargetHeight = _screenBounds.Height;
+                screen.RendertargetWidth = ScreenBounds.Width;
+                screen.RendertargetHeight = ScreenBounds.Height;
             }
             screen.RenderTarget = new RenderTarget2D(this.GraphicsDevice, screen.RendertargetWidth, screen.RendertargetHeight);
-            _screens.Insert(0,screen);
-            _assetsManager.AddScreensAssets(screen.Assets);
+            Screens.Insert(0, screen);
+            AssetsManager.AddScreensAssets(screen.Assets);
 
-            _screens[0].Initialize();
+            Screens[0].Initialize();
         }
 
         /// <summary>
@@ -223,8 +171,8 @@ namespace RaspberryEngine
         /// </summary>
         public void RemoveScreen(Screen screen)
         {
-            _screens.Remove(screen);
-            _assetsManager.RemoveScreensAssets(screen.Assets);
+            Screens.Remove(screen);
+            AssetsManager.RemoveScreensAssets(screen.Assets);
         }
 
         /// <summary>
@@ -233,25 +181,25 @@ namespace RaspberryEngine
         public void ReplaceScreen(Screen screen)
         {
             //remove old screen
-            _screens.Remove(_screens[0]);
+            Screens.Remove(Screens[0]);
 
             //start loading the new screen
             screen.ScreenManager = this;
             if (screen.RendertargetWidth == 0 && screen.RendertargetHeight == 0)
             {
-                screen.RendertargetWidth = _screenBounds.Width;
-                screen.RendertargetHeight = _screenBounds.Height;
+                screen.RendertargetWidth = ScreenBounds.Width;
+                screen.RendertargetHeight = ScreenBounds.Height;
             }
             screen.RenderTarget = new RenderTarget2D(this.GraphicsDevice, screen.RendertargetWidth, screen.RendertargetHeight);
-            _screens.Insert(0, screen);
-            _assetsManager.AddScreensAssets(screen.Assets);
+            Screens.Insert(0, screen);
+            AssetsManager.AddScreensAssets(screen.Assets);
 
             //remove the old screens assets
-            _assetsManager.RemoveScreensAssets(screen.Assets);
+            AssetsManager.RemoveScreensAssets(screen.Assets);
 
-            _screens[0].Initialize();
+            Screens[0].Initialize();
         }
 
-        
+
     }
 }
