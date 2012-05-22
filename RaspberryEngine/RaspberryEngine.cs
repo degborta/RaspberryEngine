@@ -76,7 +76,6 @@ namespace RaspberryEngine
             ScreenBounds = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight); // This is used by the screens to get the size for the default rendertarget
 
             _configuration = configuration;
-            AddScreen(_configuration.StartScreen);
         }
 
         protected void OnGraphicsComponentDeviceReset(object sender, EventArgs e)

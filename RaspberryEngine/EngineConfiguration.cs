@@ -5,7 +5,6 @@ namespace RaspberryEngine
 {
     public class EngineConfiguration
     {
-        public Screen StartScreen { get; set; }
         public bool EnableFixedTimeStep { get; set; }
         public bool EnableVerticalSync { get; set; }
         public bool EnableFullScreen { get; set; }

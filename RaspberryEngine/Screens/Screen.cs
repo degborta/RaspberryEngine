@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using RaspberryEngine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RaspberryEngine.Assets;
@@ -18,31 +17,23 @@ namespace RaspberryEngine.Screens
     /// as screens.
     /// </summary>
     public abstract class Screen : IScreen{
-        int _maxParticles = 5000;
-        int _rendertargetWidth = 0;
-        int _rendertargetHeight = 0;
-        private Camera _camera;
+        private const int _maxParticles = 5000;
 
         private List<Text> _texts;
-        private List<Sprite> _sprites;
-        private List<Emitter> _emitters;
-        private List<Particle> _particles;
-        
-		private RenderTarget2D _renderTarget; //This is the screens rendertarget
-        private Texture2D _renderTexture; //This is the final screen image
-
         public List<LoadableAsset> Assets; //The assets being used by this screen
 
         /// <summary>
         /// Load data for the screen.
         /// </summary>
-        public Screen()
+        protected Screen()
         {
-            _camera = new Camera();
+            RendertargetWidth = 0;
+            RendertargetHeight = 0;
+            Camera = new Camera();
             _texts = new List<Text>();
-            _sprites = new List<Sprite>();
-            _emitters = new List<Emitter>();
-            _particles = new List<Particle>();
+            Sprites = new List<Sprite>();
+            Emitters = new List<Emitter>();
+            Particles = new List<Particle>();
             Assets = new List<LoadableAsset>();
         }
 
@@ -55,14 +46,14 @@ namespace RaspberryEngine.Screens
         /// </summary>
         public virtual void Update(GameTime gameTime)
         {
-            for (int i = _sprites.Count - 1; i >= 0; i--)
+            for (int i = Sprites.Count - 1; i >= 0; i--)
             {
                 // update Animation frames
-                if (_sprites[i].Animated)
-                    _sprites[i].Frame++;
+                if (Sprites[i].Animated)
+                    Sprites[i].Frame++;
                 // remove all oneSteps
-                if (_sprites[i].OneStep)
-                    _sprites.RemoveAt(i);
+                if (Sprites[i].OneStep)
+                    Sprites.RemoveAt(i);
             }
             
             for (int i = _texts.Count - 1; i >= 0; i--)
@@ -71,18 +62,18 @@ namespace RaspberryEngine.Screens
                     _texts.RemoveAt(i);
 
             //Update particles and remove them if they are out of lifes
-            for (int i = _particles.Count - 1; i >= 0; i--)
-                if (_particles[i].Update())
-                    _particles.RemoveAt(i);
+            for (int i = Particles.Count - 1; i >= 0; i--)
+                if (Particles[i].Update())
+                    Particles.RemoveAt(i);
 
             //Update all emitters and add new particles to _Particles
-            foreach (Emitter e in _emitters)
-                _particles.AddRange(e.Update(null, Vector2.Zero));
+            foreach (Emitter e in Emitters)
+                Particles.AddRange(e.Update(null, Vector2.Zero));
 
             //Remove a rande of particles if they are to many
-            int removeRange = _particles.Count - _maxParticles;
+            int removeRange = Particles.Count - _maxParticles;
             if (removeRange > 0)
-                _particles.RemoveRange(0, removeRange);
+                Particles.RemoveRange(0, removeRange);
         }
 
         /// <summary>
@@ -90,14 +81,14 @@ namespace RaspberryEngine.Screens
         /// </summary>
         public virtual void Draw (GameTime gameTime)
 		{
-			ScreenManager.GraphicsDevice.SetRenderTarget (_renderTarget);
+			ScreenManager.GraphicsDevice.SetRenderTarget (RenderTarget);
 			ScreenManager.GraphicsDevice.Clear (Color.CornflowerBlue);
 
 			//Draw all normal sprites
 			ScreenManager.SpriteBatch.Begin (SpriteSortMode.BackToFront, BlendState.AlphaBlend, null,
-                    null, null, null, _camera.get_transformation (ScreenManager.GraphicsDevice));
+                    null, null, null, Camera.get_transformation (ScreenManager.GraphicsDevice));
 
-            foreach (Sprite s in _sprites)
+            foreach (Sprite s in Sprites)
             {
                 if (s.Frame == null)
                 {
@@ -122,96 +113,44 @@ namespace RaspberryEngine.Screens
 
 			//Draw all particles
 			ScreenManager.SpriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive, null,
-                   null, null, null, _camera.get_transformation(ScreenManager.GraphicsDevice));
+                   null, null, null, Camera.get_transformation(ScreenManager.GraphicsDevice));
 
-			foreach (Particle p in _particles) {
+			foreach (Particle p in Particles) {
                 ScreenManager.SpriteBatch.Draw((Texture2D)ScreenManager.AssetsManager.GetAsset(p.TextureKey), p.Position, null, p._color, p.Angle,
-                new Vector2(((Texture2D)ScreenManager.AssetsManager.GetAsset(p.TextureKey)).Width / 2, ((Texture2D)ScreenManager.AssetsManager.GetAsset(p.TextureKey)).Height / 2),
+                new Vector2(((Texture2D)ScreenManager.AssetsManager.GetAsset(p.TextureKey)).Width / 2f, ((Texture2D)ScreenManager.AssetsManager.GetAsset(p.TextureKey)).Height / 2f),
                 p._scale, SpriteEffects.None, 0f);
 			}
 			ScreenManager.SpriteBatch.End ();
 
 			ScreenManager.GraphicsDevice.SetRenderTarget (null);
-			_renderTexture = (Texture2D)_renderTarget;
+			RenderTexture = RenderTarget;
 		}
 
         /// <param name="Relative">If the newPosition should be added to the current position</param>
         public void UpdateCamera(Vector2 newPosition, bool Relative)
         {
             if (Relative)
-                _camera.Pos += newPosition;
-            else _camera.Pos = newPosition;
+                Camera.Pos += newPosition;
+            else Camera.Pos = newPosition;
         }
 
-        public int RendertargetWidth
-        {
-            get
-            {
-                return _rendertargetWidth;
-            }
-            set
-            {
-                _rendertargetWidth = value;
-            }
-        }
-        public int RendertargetHeight
-        {
-            get
-            {
-                return _rendertargetHeight;
-            }
-            set
-            {
-                _rendertargetHeight = value;
-            }
-        }
+        public int RendertargetWidth { get; set; }
 
-        public Camera Camera
-        {
-            get
-            {
-                return _camera;
-            }
-        }
+        public int RendertargetHeight { get; set; }
 
-        public List<Sprite> Sprites
-        {
-            get
-            {
-                return _sprites;
-            }
-        }
-        public List<Emitter> Emitters
-        {
-            get
-            {
-                return _emitters;
-            }
-        }
-        public List<Particle> Particles
-        {
-            get
-            {
-                return _particles;
-            }
-        }
+        public Camera Camera { get; private set; }
 
-        public RenderTarget2D RenderTarget
-        {
-            set
-            {
-                _renderTarget = value;
-            }
-        }
-        public Texture2D RenderTexture
-        {
-            get
-            {
-                return _renderTexture;
-            }
-        }
+        public List<Sprite> Sprites { get; private set; }
 
-    	public bool DisplayFPS{ get; set; }
+        public List<Emitter> Emitters { get; private set; }
+
+        public List<Particle> Particles { get; private set; }
+
+        public RenderTarget2D RenderTarget { private get; set; }
+
+        public Texture2D RenderTexture { get; private set; }
+
+        public bool DisplayFPS{ get; set; }
 
         public void AddText(string FontKey, string Text, Vector2 Position, Vector2 Orgin, Vector2 Scale, float Angle, Color Color, float Depth)
         {
@@ -219,16 +158,16 @@ namespace RaspberryEngine.Screens
         }
         public void AddSprite(bool Onestep, string TextureKey, Vector2 Position, Vector2 Orgin, Vector2 Scale, float Angle, Color Color, float Depth, byte? Frame, bool Animated)
         {
-            _sprites.Add(new Sprite(Onestep, TextureKey, Position, null, Orgin, Scale, Angle, Color, Depth, Frame, Animated));
+            Sprites.Add(new Sprite(Onestep, TextureKey, Position, null, Orgin, Scale, Angle, Color, Depth, Frame, Animated));
         }
         public void AddSprite(bool Onestep, string TextureKey, Rectangle Area, Vector2 Orgin, float Angle, Color Color, float Depth, byte? Frame, bool Animated)
         {
-            _sprites.Add(new Sprite(Onestep, TextureKey, Vector2.Zero, Area, Orgin, Vector2.One, Angle, Color, Depth, Frame, Animated));
+            Sprites.Add(new Sprite(Onestep, TextureKey, Vector2.Zero, Area, Orgin, Vector2.One, Angle, Color, Depth, Frame, Animated));
         }
         
         public void AddEmitter(string TextureKey, Vector2 Position, EmitterSettings Settings)
         {
-            _emitters.Add(new Emitter(Position, TextureKey, Settings));
+            Emitters.Add(new Emitter(Position, TextureKey, Settings));
         }
 
         public Engine ScreenManager; //The screenManager for this screen
