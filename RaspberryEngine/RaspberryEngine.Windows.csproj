@@ -67,6 +67,7 @@
     <Compile Include="Components\Button.cs" />
     <Compile Include="Components\Camera.cs" />
     <Compile Include="Components\FPSCounter.cs" />
+    <Compile Include="Components\KeyTouch.cs" />
     <Compile Include="Components\Menu.cs" />
     <Compile Include="EngineConfiguration.cs" />
     <Compile Include="Geometry\Circle.cs" />

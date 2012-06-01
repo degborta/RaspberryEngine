@@ -42,6 +42,7 @@ namespace RaspberryEngine
         public Engine(EngineConfiguration configuration)
         {
             Screens = new List<Screen>();
+            IsMouseVisible = true;
             IsFixedTimeStep = configuration.EnableFixedTimeStep;
 
             _graphics = new GraphicsDeviceManager(this)
