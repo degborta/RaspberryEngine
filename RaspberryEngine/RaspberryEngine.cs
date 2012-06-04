@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.GamerServices;
 using RaspberryEngine.Assets;
 using RaspberryEngine.Components;
 using RaspberryEngine.Screens;
@@ -74,6 +75,8 @@ namespace RaspberryEngine
                                 };
 
             ScreenBounds = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight); // This is used by the screens to get the size for the default rendertarget
+            
+            Components.Add(new GamerServicesComponent(this));
 
             _configuration = configuration;
         }
