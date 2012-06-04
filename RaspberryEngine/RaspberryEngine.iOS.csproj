@@ -82,9 +82,7 @@
     <Compile Include="Particles\Particle.cs" />
     <Compile Include="Input\InputState.cs" />
     <Compile Include="Helpers\GameHelper.cs" />
-    <Compile Include="Graphics\AnimatedSprite.cs" />
     <Compile Include="Graphics\Sprite.cs" />
-    <Compile Include="Graphics\SpriteSheet.cs" />
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Geometry\Circle.cs" />
     <Compile Include="Geometry\ExtendedRectangle.cs" />
@@ -95,6 +93,41 @@
     <Compile Include="Assets\AssetType.cs" />
     <Compile Include="Assets\AssetsManager.cs" />
     <Compile Include="Assets\LoadableAsset.cs" />
-    <Compile Include="ScreenManager.cs" />
+    <Compile Include="EngineConfiguration.cs" />
+    <Compile Include="RaspberryEngine.cs" />
+    <Compile Include="Network\NetworkManager.cs" />
+    <Compile Include="Particles\EmitterSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\.DS_Store" />
+    <None Include="bin\iPhone\Debug\FarseerEngine.dll" />
+    <None Include="bin\iPhone\Debug\FarseerEngine.dll.mdb" />
+    <None Include="bin\iPhone\Debug\Lidgren.Network.iOS.dll" />
+    <None Include="bin\iPhone\Debug\Lidgren.Network.iOS.dll.mdb" />
+    <None Include="bin\iPhone\Debug\MonoGame.Framework.dll" />
+    <None Include="bin\iPhone\Debug\MonoGame.Framework.iOS.dll" />
+    <None Include="bin\iPhone\Debug\MonoGame.Framework.iOS.dll.mdb" />
+    <None Include="bin\iPhone\Debug\RaspberryEngineiOS.dll" />
+    <None Include="bin\iPhone\Debug\RaspberryEngineiOS.dll.mdb" />
+    <None Include="bin\iPhone\Release\FarseerEngine.dll" />
+    <None Include="bin\iPhone\Release\FarseerEngine.dll.mdb" />
+    <None Include="bin\iPhone\Release\Lidgren.Network.iOS.dll" />
+    <None Include="bin\iPhone\Release\Lidgren.Network.iOS.dll.mdb" />
+    <None Include="bin\iPhone\Release\MonoGame.Framework.dll" />
+    <None Include="bin\iPhone\Release\RaspberryEngineiOS.dll" />
+    <None Include="bin\iPhoneSimulator\.DS_Store" />
+    <None Include="bin\iPhoneSimulator\Debug\.DS_Store" />
+    <None Include="bin\iPhoneSimulator\Debug\FarseerEngine.dll" />
+    <None Include="bin\iPhoneSimulator\Debug\FarseerEngine.dll.mdb" />
+    <None Include="bin\iPhoneSimulator\Debug\Lidgren.Network.dll" />
+    <None Include="bin\iPhoneSimulator\Debug\Lidgren.Network.dll.mdb" />
+    <None Include="bin\iPhoneSimulator\Debug\Lidgren.Network.iOS.dll" />
+    <None Include="bin\iPhoneSimulator\Debug\Lidgren.Network.iOS.dll.mdb" />
+    <None Include="bin\iPhoneSimulator\Debug\MonoGame.Framework.dll" />
+    <None Include="bin\iPhoneSimulator\Debug\MonoGame.Framework.iOS.dll" />
+    <None Include="bin\iPhoneSimulator\Debug\MonoGame.Framework.iOS.dll.mdb" />
+    <None Include="bin\iPhoneSimulator\Debug\RaspberryEngine.iOS.dll" />
+    <None Include="bin\iPhoneSimulator\Debug\RaspberryEngine.iOS.dll.mdb" />
   </ItemGroup>
 </Project>
