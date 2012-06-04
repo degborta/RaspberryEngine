@@ -19,6 +19,7 @@ namespace RaspberryEngine.Components
 
         private readonly bool _passwordMode;
 
+
         private readonly Rectangle[,] _r;
         private string[,] _c;
 
