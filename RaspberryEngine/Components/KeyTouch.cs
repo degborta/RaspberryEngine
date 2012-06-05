@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -19,7 +20,6 @@ namespace RaspberryEngine.Components
 
         private readonly bool _passwordMode;
 
-
         private readonly Rectangle[,] _r;
         private string[,] _c;
 
@@ -29,8 +29,9 @@ namespace RaspberryEngine.Components
         private readonly string[] _textureKeys;
         private readonly string _fontKey;
 
-        public KeyTouch(bool passwordMode, string[] texture, string font, Rectangle area)
+        public KeyTouch(string description, bool passwordMode, string[] texture, string font, Rectangle area)
         {
+            _descriptionText = description;
             //This is the size of the buttons collision box
             //It is made to fit the resolution
             _buttonWidth = (int)Math.Floor(area.Width / 10f);
@@ -55,14 +56,14 @@ namespace RaspberryEngine.Components
                         multi = 2;
 
                     _r[y, x] = new Rectangle((x * _buttonWidth) + _buttonWidth / 2,
-                                             ((y * _buttonWidth) + _buttonWidth / 2) + (area.Height - (_buttonWidth * 5)),
+                                             ((y * _buttonWidth) + _buttonWidth / 2),
                                              _buttonWidth * multi,
                                              _buttonWidth);
                 }
-
+            
             //Create the textfield rectangle
             _textfield = new Rectangle(_buttonWidth / 2,
-                                     (_buttonWidth / 2) + (area.Height - (_buttonWidth * 6)),
+                                     (_buttonWidth / 2),
                                       _buttonWidth * 9,
                                       _buttonWidth);
         }
@@ -116,87 +117,88 @@ namespace RaspberryEngine.Components
 
         public void Draw(Screen screen, GameTime time)
         {
-            int buttonW = (int)(_buttonWidth * 0.2f);
-
-            string drawString = _inputText;
-
-            if(_passwordMode)
-            {
-                int stars = drawString.Length - 0;
-                if(stars < 0)
-                    stars = 0;
-
-                string s = "";
-                for (int i = 0; i < stars; i++)
-                    s += "*";
-                
-
-            }
-            if (time.TotalGameTime.Milliseconds / 500 % 2 == 0)
-                drawString += "|";
-
-            Rectangle fieldleft = new Rectangle(
-                _textfield.X,
-                _textfield.Y,
-                buttonW,
-                _textfield.Height);
-
-            Rectangle fieldcenter = new Rectangle(
-                _textfield.X + buttonW,
-                _textfield.Y,
-                _textfield.Width - (buttonW * 2),
-                _textfield.Height);
-
-            Rectangle fieldright = new Rectangle(
-                _textfield.X + _textfield.Width - buttonW,
-                _textfield.Y,
-                buttonW,
-                _textfield.Height);
-
-            screen.AddSprite(true, _textureKeys[3], fieldleft, Vector2.Zero, 0, Color.White, 0, null, false);
-            screen.AddSprite(true, _textureKeys[4], fieldcenter, Vector2.Zero, 0, Color.White, 0, null, false);
-            screen.AddSprite(true, _textureKeys[5], fieldright, Vector2.Zero, 0, Color.White, 0, null, false);
-            screen.AddText(_fontKey, drawString, new Vector2(
-                                                     _textfield.X + buttonW,
-                                                     (_textfield.Y + (_textfield.Height / 2)) -
-                                                     ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(_fontKey)).MeasureString(drawString).Y / 2),
-                                                     Vector2.Zero, Vector2.One,
-                                                     0, Color.White, 0);
-
-            for (int y = 0; y < _r.GetLength(0); y++)
+            DrawTextfields(screen, time);
+            for (int y = 2; y < _r.GetLength(0); y++)
                 for (int x = 0; x < _r.GetLength(1); x++)
-                    DrawButton(_r[y, x], _c[y, x], screen);
+                    DrawButton(x, y,  screen);
         }
 
-        private void DrawButton(Rectangle rec, string txt, Screen screen)
+        private void DrawButton(int x, int y, Screen screen)
         {
             int buttonW = (int)(_buttonWidth * 0.2f);
             Rectangle left = new Rectangle(
-                rec.X,
-                rec.Y,
+                _r[y,x].X,
+                _r[y, x].Y,
                 buttonW,
-                rec.Height);
+                _r[y, x].Height);
 
             Rectangle center = new Rectangle(
-                rec.X + buttonW,
-                rec.Y,
-                rec.Width - (buttonW * 2),
-                rec.Height);
+                _r[y, x].X + buttonW,
+                _r[y, x].Y,
+                _r[y, x].Width - (buttonW * 2),
+                _r[y, x].Height);
 
             Rectangle right = new Rectangle(
-                rec.X + rec.Width - buttonW,
-                rec.Y,
+                _r[y, x].X + _r[y, x].Width - buttonW,
+                _r[y, x].Y,
                 buttonW,
-                rec.Height);
+                _r[y, x].Height);
 
             screen.AddSprite(true, _textureKeys[0], left, Vector2.Zero, 0, Color.White, 1, null, false);
             screen.AddSprite(true, _textureKeys[1], center, Vector2.Zero, 0, Color.White, 1, null, false);
             screen.AddSprite(true, _textureKeys[2], right, Vector2.Zero, 0, Color.White, 1, null, false);
-            screen.AddText(_fontKey, txt, new Vector2(
-                    (rec.X + (rec.Width / 2)) - ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(_fontKey)).MeasureString(txt).X / 2,
-                    (rec.Y + (rec.Height / 2)) - ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(_fontKey)).MeasureString(txt).Y / 2),
+            screen.AddText(_fontKey, _c[y, x], new Vector2(
+                                              (_r[y, x].X + (_r[y, x].Width / 2)) -
+                                              ((SpriteFont)
+                                               screen.ScreenManager.AssetsManager.GetAsset(_fontKey)).
+                                                  MeasureString(_c[y, x]).X / 2,
+                                              (_r[y, x].Y + (_r[y, x].Height / 2)) -
+                                              ((SpriteFont)
+                                               screen.ScreenManager.AssetsManager.GetAsset(_fontKey)).
+                                                  MeasureString(_c[y, x]).Y / 2),
                            Vector2.Zero, Vector2.One,
                            0, Color.White, 0);
+        }
+
+        private void DrawTextfields(Screen screen, GameTime time)
+        {
+            //Draw field background
+            int buttonW = (int)(_buttonWidth * 0.2f);
+            Rectangle left = new Rectangle(_r[1, 0].X, _r[1, 0].Y, buttonW, _r[1, 0].Height);
+            Rectangle center = new Rectangle(_r[1, 0].X + buttonW, _r[1, 0].Y, (_r[1, 0].Width * (_r.GetLength(1) + 1)) - (buttonW * 2), _r[1, 0].Height);
+            Rectangle right = new Rectangle(_r[1, 0].X + center.Width + buttonW, _r[1, 0].Y, buttonW, _r[1, 0].Height);
+
+            screen.AddSprite(true, _textureKeys[3], left, Vector2.Zero, 0, Color.White, 1, null, false);
+            screen.AddSprite(true, _textureKeys[4], center, Vector2.Zero, 0, Color.White, 1, null, false);
+            screen.AddSprite(true, _textureKeys[5], right, Vector2.Zero, 0, Color.White, 1, null, false);
+
+            screen.AddText(_fontKey, _descriptionText, new Vector2(
+                                                     _r[0, 0].X + buttonW,
+                                                     (_r[0, 0].Y + (_textfield.Height / 2)) -
+                                                     ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(_fontKey)).MeasureString(_descriptionText).Y / 2),
+                                                     Vector2.Zero, Vector2.One,
+                                                     0, Color.White, 0);
+
+            //this is the input string that is drawn
+            //its the same as _inputText but with a few modifications
+            string drawString = _inputText;
+            //do the password thing
+            if (_passwordMode)
+            {
+                int stars = drawString.Length - 0; if (stars < 0) stars = 0;
+                string s = ""; for (int i = 0; i < stars; i++) s += "*";
+            }
+            //add the flashing indicator
+            if (time.TotalGameTime.Milliseconds / 500 % 2 == 0) drawString += "|";
+            //format the string so its not to long for the textfield
+            while (((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(_fontKey)).MeasureString(drawString).X > center.Width) drawString = drawString.Remove(0, 1);
+
+            screen.AddText(_fontKey, drawString, new Vector2(
+                                                     _r[1, 0].X + buttonW,
+                                                     (_r[1, 0].Y + (_textfield.Height / 2)) -
+                                                     ((SpriteFont)screen.ScreenManager.AssetsManager.GetAsset(_fontKey)).MeasureString(drawString).Y / 2),
+                                                     Vector2.Zero, Vector2.One,
+                                                     0, Color.White, 0);
         }
 
         static string[,] GetChar(bool chars)
@@ -208,6 +210,8 @@ namespace RaspberryEngine.Components
             if (chars)
                 return new string[,]
                      {
+                         {" ", " ", " ", " ", " ", " ", " ", " "},
+                         {" ", " ", " ", " ", " ", " ", " ", " "},
                          {"A", "B", "C", "D", "E", "F", "G", "Back"},
                          {"H", "I", "J", "K", "L", "M", "N", "@123"},
                          {"O", "P", "Q", "R", "S", "T", "U", "Space"},
@@ -216,6 +220,8 @@ namespace RaspberryEngine.Components
             else
                 return new string[,]
                      {
+                         {" ", " ", " ", " ", " ", " ", " ", " "},
+                         {" ", " ", " ", " ", " ", " ", " ", " "},
                          {"7", "8", "9", "/", "!", "?", "&", "Back"},
                          {"4", "5", "6", "*", "<", ">", "$", "ABC"},
                          {"1", "2", "3", "-", "{", "}", "~", "Space"},
