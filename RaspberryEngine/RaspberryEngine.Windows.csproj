@@ -46,6 +46,9 @@
     <Reference Include="MonoGame.Framework.Windows">
       <HintPath>..\ThirdParty\MonoGame\Windows\MonoGame.Framework.Windows.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json.Net20">
+      <HintPath>..\..\Kyckling\ThirdParty\JSON.NET\iOS\Newtonsoft.Json.Net20.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK">
       <HintPath>..\ThirdParty\MonoGame\Windows\OpenTK.dll</HintPath>
     </Reference>
@@ -76,6 +79,8 @@
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Helpers\GameHelper.cs" />
     <Compile Include="Input\InputState.cs" />
+    <Compile Include="Network\Copy of NetworkManager.cs" />
+    <Compile Include="Network\Highscore.cs" />
     <Compile Include="Network\NetworkManager.cs" />
     <Compile Include="Particles\EmitterSettings.cs" />
     <Compile Include="Particles\Emitter.cs" />

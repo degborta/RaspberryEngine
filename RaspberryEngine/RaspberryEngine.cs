@@ -59,17 +59,8 @@ namespace RaspberryEngine
             
             Content.RootDirectory = configuration.ContentDirectory;
 
-            NetworkManager = new NetworkManager
-                                 {
-                                     AppId = configuration.AppId,
-                                     Port = configuration.Port,
-                                     ServerIp = configuration.ServerIp,
-                                     Username = configuration.Username,
-                                     PassWord = configuration.Password
-                                 };
-
+            NetworkManager = new NetworkManager(configuration.ServerUrl);
             FpsCounter = new FPSCounter();
-
             AssetsManager = new AssetsManager(Content)
                                 {
                                     HighRes = configuration.EnableHighQualityContent
@@ -77,8 +68,6 @@ namespace RaspberryEngine
 
             ScreenBounds = new Rectangle(0, 0, _graphics.PreferredBackBufferWidth, _graphics.PreferredBackBufferHeight); // This is used by the screens to get the size for the default rendertarget
             
-            Components.Add(new GamerServicesComponent(this));
-
             _configuration = configuration;
         }
 
@@ -107,9 +96,6 @@ namespace RaspberryEngine
         /// </summary>
         protected override void Update(GameTime gameTime)
         {
-            if (NetworkEnabled)
-                NetworkManager.Update();
-
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
             Screens[0].Update(gameTime);
@@ -147,7 +133,6 @@ namespace RaspberryEngine
         public void Exit()
         {
             AssetsManager.Unload();
-            NetworkManager.Disconnect();
             base.UnloadContent();
         }
 
