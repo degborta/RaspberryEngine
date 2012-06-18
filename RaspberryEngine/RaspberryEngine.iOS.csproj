@@ -63,14 +63,17 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
-    <Reference Include="MonoGame.Framework.iOS">
-      <HintPath>..\ThirdParty\MonoGame\iOS\MonoGame.Framework.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="Lidgren.Network.iOS">
       <HintPath>..\ThirdParty\MonoGame\iOS\Lidgren.Network.iOS.dll</HintPath>
     </Reference>
     <Reference Include="FarseerEngine">
       <HintPath>..\ThirdParty\Farseer\iOS\FarseerEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework.iOS">
+      <HintPath>..\ThirdParty\MonoGame\iOS\MonoGame.Framework.iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.MonoTouch">
+      <HintPath>..\ThirdParty\Newtonsoft.Json.MonoTouch.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -98,6 +101,8 @@
     <Compile Include="Network\NetworkManager.cs" />
     <Compile Include="Particles\EmitterSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Network\Highscore.cs" />
+    <Compile Include="Components\KeyTouch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\.DS_Store" />
